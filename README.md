@@ -160,7 +160,7 @@ The iterative Bayesian Optimisation approach consistently identified higher-perf
 
 See:
 
-* [Datasheet](DATASHEET.md)
+* [Datasheet](DATASHEET.MD)
 
 This document describes the dataset composition, collection process, intended uses and maintenance procedures.
 
