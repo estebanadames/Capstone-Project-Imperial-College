@@ -168,7 +168,7 @@ This document describes the dataset composition, collection process, intended us
 
 See:
 
-* [Model Card](MODEL_CARD.md)
+* [Model Card](MODEL_CARD.MD)
 
 This document explains the optimisation methodology, assumptions, limitations and performance characteristics.
 
