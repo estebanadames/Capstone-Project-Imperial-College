@@ -1,110 +1,156 @@
-# Datasheet for the BBO Capstone Dataset
+# Datasheet for the Black-Box Optimisation (BBO) Capstone Dataset
 
 ## Motivation
 
-This dataset was created as part of the Imperial College Business School Black-Box Optimisation (BBO) Capstone Project.
+This datasheet documents the dataset developed throughout the **Imperial College Business School Executive Education – Black-Box Optimisation (BBO) Capstone Project**.
 
-The objective is to optimise eight unknown functions using a limited number of evaluations. The dataset supports experimentation with optimisation algorithms, surrogate modelling, Bayesian optimisation, and sequential decision-making under uncertainty.
+The objective of the project was to optimize eight unknown black-box objective functions under a strict evaluation budget. Since the analytical form of each function was unavailable, the optimization process relied on sequential observations collected over multiple rounds to train surrogate models and guide future query selections.
 
-The dataset was created to track query histories, function evaluations, and optimisation performance across multiple rounds of experimentation.
+This dataset captures the complete optimization history across thirteen iterative rounds and supports experimentation with Bayesian Optimization, Gaussian Process Regression, surrogate modelling and sequential decision-making under uncertainty.
+
+The primary purpose of documenting this dataset is to promote transparency, reproducibility and responsible machine learning practices.
 
 ---
 
-## Composition
+# Dataset Composition
 
 The dataset contains:
 
-* Query inputs submitted to eight black-box functions
-* Corresponding function outputs
-* Historical query records across ten optimisation rounds
+- Historical query vectors submitted to eight black-box objective functions.
+- Corresponding objective function evaluations returned by the optimization platform.
+- Sequential observations collected across thirteen optimisation rounds.
+- Weekly optimisation histories used to retrain surrogate models.
 
-Each function has a fixed dimensionality:
+Each objective function has a fixed dimensionality:
 
-| Function   | Dimensions |
-| ---------- | ---------- |
-| Function 1 | 2          |
-| Function 2 | 2          |
-| Function 3 | 3          |
-| Function 4 | 4          |
-| Function 5 | 4          |
-| Function 6 | 5          |
-| Function 7 | 6          |
-| Function 8 | 8          |
+| Function | Dimensions |
+|----------|-----------:|
+| Function 1 | 2 |
+| Function 2 | 2 |
+| Function 3 | 3 |
+| Function 4 | 4 |
+| Function 5 | 4 |
+| Function 6 | 5 |
+| Function 7 | 6 |
+| Function 8 | 8 |
 
-By Round 10, the dataset contained approximately 80 query-output observations.
+Across thirteen rounds, the dataset contains more than one hundred query–output observations distributed across the eight optimisation problems.
 
-Data is stored in NumPy array format and Python scripts.
+Data is stored as Python scripts and NumPy arrays.
 
-No personal, demographic, or sensitive information is included.
-
----
-
-## Collection Process
-
-The data was collected through iterative interaction with the BBO challenge platform.
-
-Each week:
-
-1. Previous inputs and outputs were analysed.
-2. A Gaussian Process surrogate model was fitted.
-3. Expected Improvement was used as the acquisition strategy.
-4. A new candidate query was generated.
-5. The query was submitted to the challenge platform.
-6. The returned function evaluation was added to the dataset.
-
-Data collection occurred over ten optimisation rounds.
+The dataset contains **no personal, demographic, financial or sensitive information**.
 
 ---
 
-## Preprocessing, Cleaning and Labelling
+# Data Collection Process
 
-Minimal preprocessing was required.
+The dataset was generated through iterative interaction with the Imperial College BBO challenge platform.
 
-Steps included:
+Each optimisation round followed the same workflow:
 
-* Converting query values into NumPy arrays
-* Standardising numerical precision
-* Organising results by optimisation round
-* Storing inputs and outputs in structured Python files
+1. Historical observations from previous rounds were collected.
+2. A Gaussian Process Regression surrogate model was trained independently for each function.
+3. An Expected Improvement acquisition function identified promising candidate locations.
+4. New query points were generated.
+5. Queries were submitted to the challenge platform.
+6. Objective function evaluations were returned.
+7. The new observations were incorporated into the historical dataset for the following optimisation round.
 
-No labels were manually assigned.
-
-No missing values were encountered.
-
----
-
-## Uses
-
-### Intended Uses
-
-* Bayesian optimisation research
-* Surrogate modelling experiments
-* Sequential optimisation studies
-* Machine learning education
-* Black-box optimisation benchmarking
-
-### Inappropriate Uses
-
-* Real-world decision-making without validation
-* Performance comparisons against domains outside black-box optimisation
-* Applications involving human subjects or sensitive data
+Because the dataset was collected sequentially, every new observation depended on information obtained during previous rounds.
 
 ---
 
-## Distribution
+# Preprocessing and Data Preparation
 
-The dataset is available through the project's public GitHub repository.
+Only minimal preprocessing was required because all variables were continuous numerical values.
 
-Distribution is limited to educational and research purposes associated with the capstone project.
+Preparation steps included:
 
-No licensing restrictions beyond the repository license apply.
+- Converting query coordinates into NumPy arrays.
+- Maintaining six-decimal numerical precision.
+- Organising observations by optimisation round.
+- Separating inputs and outputs for each function.
+- Validating dimensional consistency before model training.
+
+No observations required manual correction.
+
+No missing values were encountered during the optimisation process.
+
+No manual labels were assigned.
 
 ---
 
-## Maintenance
+# Intended Uses
 
-The dataset is maintained by the project author.
+This dataset is intended for:
 
-Updates occur whenever new optimisation rounds are completed.
+- Bayesian Optimization research.
+- Gaussian Process Regression experiments.
+- Surrogate modelling studies.
+- Sequential optimisation research.
+- Educational demonstrations of expensive black-box optimisation.
+- Machine Learning coursework and reproducible research.
 
-Version control is managed through GitHub to ensure transparency and reproducibility.
+The dataset is particularly appropriate for illustrating optimisation under limited evaluation budgets.
+
+---
+
+# Uses That Should Be Avoided
+
+This dataset should **not** be used for:
+
+- Benchmarking unrelated optimisation algorithms without considering the limited evaluation budget.
+- Drawing conclusions about real-world engineering systems.
+- Applications involving healthcare, finance or other high-stakes domains without additional validation.
+- Statistical inference beyond the scope of the optimisation challenge.
+
+Because the underlying objective functions remain unknown, conclusions should be interpreted within the context of this educational optimisation exercise.
+
+---
+
+# Distribution
+
+The dataset is distributed through this public GitHub repository together with:
+
+- Source code
+- Weekly optimisation scripts
+- Documentation
+- Datasheet
+- Model Card
+- Project README
+
+The repository is intended for educational, research and portfolio purposes.
+
+---
+
+# Maintenance
+
+The dataset was maintained throughout the capstone project by the project author.
+
+Version control was managed using Git and GitHub, allowing every optimisation round to be tracked transparently.
+
+No further observations are expected following completion of the final optimisation round; however, the repository will remain available as a reproducible record of the project methodology.
+
+---
+
+# Limitations
+
+Several limitations should be considered when using this dataset:
+
+- The dataset is relatively small because each optimisation round permitted only one query per function.
+- Sampling is adaptive rather than random, introducing bias toward promising regions of the search space.
+- The true analytical form of the objective functions is unknown, preventing direct validation of surrogate accuracy.
+- Some regions of the search space remain unexplored due to the limited evaluation budget.
+- Gaussian Process surrogate models assume a degree of smoothness that may not perfectly represent every objective function.
+
+These limitations are characteristic of many real-world black-box optimisation problems where evaluations are expensive.
+
+---
+
+# Ethical Considerations
+
+The dataset contains only synthetic optimisation observations and does not include information about individuals.
+
+Although Bayesian Optimization techniques are frequently applied in real-world domains such as healthcare, manufacturing and finance, this project is intended solely as an educational demonstration of sequential optimisation methods.
+
+The dataset therefore presents minimal ethical or privacy risks while promoting transparent, reproducible and responsible machine learning practices.
