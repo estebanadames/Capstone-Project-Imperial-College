@@ -192,11 +192,27 @@ Functions 5, 7 and 8 demonstrated particularly strong convergence, while Functio
 
 Several important patterns emerged during the project:
 
+<<<<<<< HEAD
 - Exploration was most valuable during the early rounds.
 - Exploitation became increasingly effective as confidence in the surrogate models improved.
 - Different objective functions required different optimisation behaviours.
 - Local refinement produced substantial gains once promising regions were identified.
 - Small, informed adjustments consistently outperformed random exploration during the later stages.
+=======
+See:
+
+* [Datasheet](DATASHEET.MD)
+
+This document describes the dataset composition, collection process, intended uses and maintenance procedures.
+
+### Model Card
+
+See:
+
+* [Model Card](MODEL_CARD.MD)
+
+This document explains the optimisation methodology, assumptions, limitations and performance characteristics.
+>>>>>>> 69ce47aeaa426c526409ee21702e2f04c5150cb4
 
 ---
 
@@ -216,7 +232,7 @@ Describes:
 - Intended uses
 - Limitations
 - Maintenance
-
+S
 ---
 
 ## Model Card
