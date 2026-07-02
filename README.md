@@ -1,85 +1,115 @@
 # Black-Box Optimisation (BBO) Capstone Project
+---
 
-## Overview
+# Overview
 
-This repository contains my work for the Imperial College Business School Black-Box Optimisation (BBO) Capstone Project.
+This repository contains my complete work for the **Imperial College Business School Executive Education – Black-Box Optimisation (BBO) Capstone Project**.
 
-The objective of the challenge is to optimise eight unknown black-box functions using a limited number of evaluations. Since the analytical form of each function is hidden, the problem requires building surrogate models that learn from historical observations and guide future query selections.
+The objective of the project is to optimise **eight unknown black-box objective functions** using a limited evaluation budget. Since the analytical expressions of the functions are hidden, each new query must be selected intelligently based only on historical observations.
 
-Throughout the project, I developed and refined a Bayesian Optimisation workflow using Gaussian Process Regression and Expected Improvement acquisition functions to balance exploration and exploitation.
+To solve this challenge, I implemented a **Bayesian Optimization** workflow using **Gaussian Process Regression (GPR)** as a surrogate model together with **Expected Improvement (EI)** to balance exploration and exploitation throughout thirteen optimisation rounds.
+
+The project documents not only the code, but also the evolution of the optimisation strategy, weekly reflections, datasets, model documentation and final results.
 
 ---
 
-## Project Objectives
+# Non-Technical Summary
 
-The main goals of this project are:
+Many real-world problems involve systems that are expensive or impossible to understand mathematically. Instead of knowing exactly how a system behaves, we only observe its inputs and outputs. This project demonstrates how machine learning can intelligently search for better solutions under those conditions.
 
-* Optimise eight unknown objective functions.
-* Learn efficient black-box optimisation strategies.
-* Evaluate surrogate modelling techniques.
-* Balance exploration and exploitation under limited data.
-* Track optimisation performance across multiple rounds.
-
-This project simulates real-world optimisation problems where experiments are expensive and objective functions are unknown.
+Using Bayesian Optimization, the algorithm gradually learned which regions of the search space produced better results and adapted its decisions accordingly. Rather than testing random points, each new experiment became increasingly informed by previous observations, allowing the optimisation process to become more efficient over time.
 
 ---
 
-## Dataset
+# Project Objectives
+
+The primary goals of this project were to:
+
+- Optimize eight unknown objective functions.
+- Build surrogate models that learn from limited observations.
+- Apply Bayesian Optimization under strict query constraints.
+- Balance exploration and exploitation effectively.
+- Track optimisation performance across thirteen sequential rounds.
+- Develop a reproducible and transparent machine learning workflow.
+
+---
+
+# Dataset
 
 The dataset consists of:
 
-* Historical query inputs submitted to each function.
-* Corresponding function evaluations returned by the challenge platform.
-* Query histories accumulated over ten optimisation rounds.
+- Historical query locations submitted each week.
+- Corresponding objective function evaluations returned by the BBO platform.
+- Weekly optimisation history accumulated across thirteen rounds.
 
 Function dimensionalities:
 
-| Function   | Dimensions |
-| ---------- | ---------- |
-| Function 1 | 2          |
-| Function 2 | 2          |
-| Function 3 | 3          |
-| Function 4 | 4          |
-| Function 5 | 4          |
-| Function 6 | 5          |
-| Function 7 | 6          |
-| Function 8 | 8          |
+| Function | Dimensions |
+|----------|-----------:|
+| Function 1 | 2 |
+| Function 2 | 2 |
+| Function 3 | 3 |
+| Function 4 | 4 |
+| Function 5 | 4 |
+| Function 6 | 5 |
+| Function 7 | 6 |
+| Function 8 | 8 |
+
+Each week's observations were incorporated into the historical dataset before training the next surrogate model.
 
 ---
 
-## Methodology
+# Methodology
 
-### Initial Exploration
+The optimisation workflow followed an iterative Bayesian Optimization pipeline.
 
-During the first rounds, I explored different regions of the search space to collect diverse observations.
+## 1. Initial Exploration
 
-### Surrogate Modelling
-
-After collecting sufficient observations, I trained Gaussian Process Regression (GPR) models using:
-
-* Matern kernels
-* White noise kernels
-* Hyperparameter optimisation
-
-These surrogate models approximate the unknown objective functions.
-
-### Acquisition Function
-
-Expected Improvement (EI) was used to identify promising candidate points while maintaining exploration of uncertain regions.
-
-### Iterative Optimisation
-
-Each week:
-
-1. Historical observations were collected.
-2. Gaussian Process models were retrained.
-3. Expected Improvement was evaluated.
-4. New candidate queries were generated.
-5. Results were incorporated into the dataset.
+During the first iterations, query points were intentionally distributed across different regions of the search space to maximize information gain.
 
 ---
 
-## Repository Structure
+## 2. Gaussian Process Surrogate Models
+
+After collecting sufficient observations, Gaussian Process Regression models were trained for each function using:
+
+- Matern kernels
+- White noise kernels
+- Automatic hyperparameter optimisation
+- Maximum likelihood estimation
+
+These surrogate models approximate the unknown objective functions while quantifying predictive uncertainty.
+
+---
+
+## 3. Acquisition Function
+
+Expected Improvement (EI) was used to determine where to sample next.
+
+EI balances:
+
+- **Exploitation:** sampling near promising regions.
+- **Exploration:** sampling uncertain regions that could contain better optima.
+
+---
+
+## 4. Weekly Optimisation Process
+
+Each optimisation round followed the same workflow:
+
+1. Update the historical dataset.
+2. Retrain Gaussian Process models.
+3. Evaluate Expected Improvement.
+4. Generate candidate query points.
+5. Submit new queries.
+6. Record outputs.
+7. Repeat.
+
+As more observations became available, the optimisation strategy gradually shifted from exploration toward local refinement around high-performing regions.
+
+---
+
+# Repository Structure
 
 ```text
 BBO_Capstone/
@@ -87,17 +117,14 @@ BBO_Capstone/
 ├── README.md
 ├── DATASHEET.md
 ├── MODEL_CARD.md
+├── LICENSE
+├── requirements.txt
 │
 ├── initial_data/
-│   ├── bbo week 2/
-│   ├── bbo week 3/
-│   ├── bbo week 4/
-│   ├── bbo week 5/
-│   ├── bbo week 6/
-│   ├── bbo week 7/
-│   ├── bbo week 8/
-│   ├── bbo week 9/
-│   ├── bbo week 10/
+│   ├── bbo_week2/
+│   ├── bbo_week3/
+│   ├── ...
+│   ├── bbo_week13/
 │
 ├── function_1/
 ├── function_2/
@@ -110,89 +137,140 @@ BBO_Capstone/
 │
 ├── bbo_week2_gp.py
 ├── bbo_week3_gp.py
-├── bbo_week4_gp.py
-├── bbo_week5_gp.py
-├── bbo_week6_gp.py
-├── bbo_week7_gp.py
-├── bbo_week8_gp.py
-├── bbo_week9_gp.py
-├── bbo_week10_gp.py
+├── ...
+├── bbo_week13_gp.py
 ```
 
 ---
 
-## Technologies Used
+# Technologies Used
 
-### Programming Language
+## Programming Language
 
-* Python 3
+- Python 3
 
-### Libraries
+## Core Libraries
 
-* NumPy
-* SciPy
-* scikit-learn
+- NumPy
+- SciPy
+- scikit-learn
+- pandas
+- matplotlib
 
-### Machine Learning Methods
+## Machine Learning Methods
 
-* Gaussian Process Regression (GPR)
-* Bayesian Optimisation
-* Expected Improvement (EI)
-* Surrogate Modelling
-
----
-
-## Results
-
-By Round 10, the optimisation process had produced substantial improvements in several functions, particularly:
-
-* Function 5
-* Function 7
-* Function 8
-
-The iterative Bayesian Optimisation approach consistently identified higher-performing regions while reducing unnecessary exploration.
+- Bayesian Optimization
+- Gaussian Process Regression
+- Surrogate Modelling
+- Expected Improvement
+- Sequential Decision Making
 
 ---
 
-## Documentation
+# Results
 
-### Datasheet
+Across thirteen optimisation rounds, the surrogate models became increasingly accurate as more observations were incorporated.
 
-See:
+The largest improvements were observed in:
 
-* [Datasheet](DATASHEET.md)
+| Function | Best Score |
+|----------|-----------:|
+| Function 1 | 0.000000 |
+| Function 2 | 0.714674 |
+| Function 3 | -0.012631 |
+| Function 4 | 0.675598 |
+| Function 5 | 5920.981579 |
+| Function 6 | -0.134276 |
+| Function 7 | 1.990473 |
+| Function 8 | 9.990223 |
 
-This document describes the dataset composition, collection process, intended uses and maintenance procedures.
-
-### Model Card
-
-See:
-
-* [Model Card](MODEL_CARD.md)
-
-This document explains the optimisation methodology, assumptions, limitations and performance characteristics.
-
----
-
-## Key Lessons Learned
-
-This project provided practical experience in:
-
-* Bayesian Optimisation
-* Surrogate modelling
-* Sequential decision making
-* Hyperparameter tuning
-* Exploration versus exploitation trade-offs
-* Reproducible machine learning workflows
-
-It also demonstrated how optimisation problems can be solved efficiently even when the underlying objective functions remain completely unknown.
+Functions 5, 7 and 8 demonstrated particularly strong convergence, while Functions 3 and 6 remained more challenging due to their more complex optimization landscapes.
 
 ---
 
-## Author
+# Key Insights
 
-Esteban Adames
+Several important patterns emerged during the project:
+
+- Exploration was most valuable during the early rounds.
+- Exploitation became increasingly effective as confidence in the surrogate models improved.
+- Different objective functions required different optimisation behaviours.
+- Local refinement produced substantial gains once promising regions were identified.
+- Small, informed adjustments consistently outperformed random exploration during the later stages.
+
+---
+
+# Documentation
+
+The repository also includes project documentation following current ML transparency practices.
+
+## Datasheet
+
+📄 [DATASHEET.md](DATASHEET.md)
+
+Describes:
+
+- Dataset motivation
+- Collection process
+- Composition
+- Intended uses
+- Limitations
+- Maintenance
+
+---
+
+## Model Card
+
+📄 [MODEL_CARD.md](MODEL_CARD.md)
+
+Describes:
+
+- Bayesian Optimization methodology
+- Model assumptions
+- Performance
+- Limitations
+- Ethical considerations
+- Appropriate use cases
+
+---
+
+# Lessons Learned
+
+This capstone provided practical experience in:
+
+- Bayesian Optimization
+- Gaussian Process modelling
+- Black-box optimisation
+- Sequential decision making
+- Hyperparameter optimisation
+- Exploration versus exploitation
+- Reproducible machine learning research
+
+Perhaps the most important lesson was that optimisation is fundamentally an iterative learning process. Rather than searching randomly, every new evaluation should improve the model's understanding of the problem and guide increasingly informed decisions.
+
+---
+
+# Future Improvements
+
+Given additional evaluation budget, future work could include:
+
+- Alternative acquisition functions (Upper Confidence Bound, Probability of Improvement)
+- Ensemble surrogate models
+- Multi-start acquisition optimisation
+- Adaptive exploration schedules
+- Reinforcement Learning inspired exploration policies
+- Automated kernel selection
+
+---
+
+# Author
+
+**Esteban Adames**
+
+VCA Core Consulting Analyst
 
 Imperial College Business School Executive Education
 
-Black-Box Optimisation Capstone Project
+Black-Box Optimisation (BBO) Capstone Project
+
+2026
